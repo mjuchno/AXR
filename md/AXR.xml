@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="AXR" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+    <cues>
+        <cue name="AXR_init" checktime="1s" checkinterval="1s">
+            <conditions>
+                <check_value value="player.ship != null"/>
+            </conditions>
+            <actions>
+                <set_value name="global.$AXR_ship" exact="player.ship"/>
+                <set_value name="global.$AXR_if_inc" exact="false"/>
+                <set_value name="global.$AXR_shield_state" exact="(player.ship.shieldpercentage^0.33)i"/>
+                <set_value name="global.$AXR_hull_state" exact="(player.ship.hullpercentage^0.33)i"/>
+                <set_value name="global.$AXR_if_log" exact="true"/>
+                <show_notification caption="'AXR_init'" details="'S%1 H%2'.[global.$AXR_shield_state, global.$AXR_hull_state]" timeout="5s" queued="false" priority="7" sound="notification_generic"/>
+            </actions>
+        </cue>
+        <cue name="AXR_init_base" checktime="1s" checkinterval="1s">
+            <conditions>
+                <check_value value="player.ship == null"/>
+            </conditions>
+            <actions>
+                <set_value name="global.$AXR_ship" exact="player.ship"/>
+                <set_value name="global.$AXR_if_inc" exact="false"/>
+                <set_value name="global.$AXR_shield_state" exact="0"/>
+                <set_value name="global.$AXR_hull_state" exact="0"/>
+                <set_value name="global.$AXR_if_log" exact="true"/>
+            </actions>
+        </cue>
+        <cue name="AXR_ship_check" checktime="2s" checkinterval="1s" instantiate="true">
+            <conditions>
+                <check_value value="global.$AXR_if_log == false"/>
+                <check_value value="global.$AXR_ship != player.ship"/>
+            </conditions>
+            <actions>
+                <set_value name="global.$AXR_if_log" exact="true"/>
+            </actions>
+        </cue>        
+        <cue name="AXR_shield_check" checktime="2s" checkinterval="1s" instantiate="true">
+            <conditions>
+                <check_value value="player.ship != null"/>
+                <check_value value="global.$AXR_if_log == false"/>
+                <check_value value="global.$AXR_shield_state != (player.ship.shieldpercentage^0.33)i"/>
+            </conditions>
+            <actions>
+                <set_value name="global.$AXR_if_log" exact="true"/>
+            </actions>
+        </cue>
+        <cue name="AXR_hull_check" checktime="2s" checkinterval="1s" instantiate="true">
+            <conditions>
+                <check_value value="player.ship != null"/>
+                <check_value value="global.$AXR_if_log == false"/>
+                <check_value value="global.$AXR_hull_state != (player.ship.hullpercentage^0.33)i"/>
+            </conditions>
+            <actions>
+                <set_value name="global.$AXR_if_log" exact="true"/>
+            </actions>
+        </cue>
+        <cue name="AXR_log" checktime="2s" checkinterval="1s" instantiate="true">
+            <conditions>
+                <check_value value="global.$AXR_if_log"/>
+            </conditions>
+            <actions>
+                <set_value name="global.$AXR_ship" exact="player.ship"/>
+                <do_if value="player.ship != null"> 
+                    <set_value name="global.$AXR_shield_state" exact="(player.ship.shieldpercentage^0.33)i"/>
+                    <set_value name="global.$AXR_hull_state" exact="(player.ship.hullpercentage^0.33)i"/>
+                    <show_notification caption="'AXR_log'" details="'S%1 H%2'.[global.$AXR_shield_state, global.$AXR_hull_state]" timeout="5s" queued="false" priority="7" sound="notification_generic"/>
+                </do_if>
+                <do_if value="player.ship == null"> 
+                    <set_value name="global.$AXR_shield_state" exact="0"/>
+                    <set_value name="global.$AXR_hull_state" exact="0"/>
+                </do_if>
+                <debug_text text="'AXR S%1 H%2'.[global.$AXR_shield_state, global.$AXR_hull_state]"/>
+                <set_value name="global.$AXR_if_log" exact="false"/>
+            </actions>
+        </cue>
+    </cues>
+</mdscript>

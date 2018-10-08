@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="AXR" name="AXR" description="Arduino X-Rebirth Cockpit" author="mjuchno" version="0.1" date="2018-10-05" save="0" enabled="1">
+  <text language="44" name="AXR" description="Arduino X-Rebirth Cockpit" author="mjuchno" />
+</content>
